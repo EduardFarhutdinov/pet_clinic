@@ -8,6 +8,5 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "types")
-@NoArgsConstructor
 public class PetType extends NamedEntity {
 }

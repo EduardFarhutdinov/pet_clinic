@@ -16,16 +16,15 @@ private final VetRepository vetRepository;
         this.vetRepository = vetRepository;
     }
 
-    @GetMapping("/vetList.ftl")
+    @GetMapping("/vets.ftl")
     public String showVetList(Map<String,Object> model){
         Vets vets = new Vets();
         vets.getVets().addAll(vetRepository.findAll());
         model.put("vets",vets);
-        return "vetList";
+        return "vets/vetList";
     }
     @GetMapping({ "/vets" })
-    public @ResponseBody
-    Vets showResourcesVetList() {
+    public @ResponseBody Vets showResourcesVetList() {
         // Here we are returning an object of type 'Vets' rather than a collection of Vet
         // objects so it is simpler for JSon/Object mapping
         Vets vets = new Vets();

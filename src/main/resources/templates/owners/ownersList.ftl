@@ -1,4 +1,4 @@
-<#import "parts/common.ftl" as c>
+<#import "../parts/common.ftl" as c>
 <@c.page>
 
 
@@ -21,7 +21,7 @@
                     <td>${owner.address}</td>
                     <td>${owner.city}</td>
                     <td>${owner.telephone}</td>
-                    <td><#list owner.pets as pet>${pet.name}</#list></td>
+                    <td><#list owner.pets as pet>${pet.name}<#sep>, </#sep></#list></td>
                 </tr>
             </#list>
         </tbody>

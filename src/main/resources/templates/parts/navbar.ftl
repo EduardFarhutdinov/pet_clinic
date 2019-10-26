@@ -13,7 +13,7 @@
                 <a class="nav-link" href="/owners/find">Find owners</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="vetList.ftl">Veterinarians</a>
+                <a class="nav-link" href="/vets.ftl">Veterinarians</a>
             </li>
 
         </ul>

@@ -1,4 +1,4 @@
-<#import "parts/common.ftl" as c >
+<#import "../parts/common.ftl" as c >
 <@c.page>
 
     <h2>Find Owners</h2>

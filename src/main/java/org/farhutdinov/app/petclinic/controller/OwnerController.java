@@ -12,7 +12,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 public class OwnerController {
@@ -33,7 +32,7 @@ public class OwnerController {
     public String initCreationForm(Map<String,Object> model){
         Owner owner = new Owner();
         model.put("owner",owner);
-        return "createOrUpdateOwnerForm";
+        return "owners/createOrUpdateOwnerForm";
     }
     @PostMapping("/owners/new")
     public String processCreationForm(@Valid Owner owner, BindingResult result, RedirectAttributes attributes){
@@ -41,7 +40,7 @@ public class OwnerController {
         if(result.hasErrors()){
             attributes.addAttribute("firstname",owner.getFirstName());
             attributes.addAttribute("lastname",owner.getLastName());
-            return "createOrUpdateOwnerForm";
+            return "owners/createOrUpdateOwnerForm";
         }else {
             ownerRepository.save(owner);
             return "redirect:/owners/" + owner.getId();
@@ -52,7 +51,7 @@ public class OwnerController {
     public String initFindForm(Map<String,Object> model){
 
         model.put("owner",new Owner());
-        return "findOwners";
+        return "owners/findOwners";
 
     }
 
@@ -68,7 +67,7 @@ public class OwnerController {
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
-            return "findOwners";
+            return "owners/findOwners";
         } else if (results.size() == 1) {
             // 1 owner found
             owner = results.iterator().next();
@@ -76,7 +75,7 @@ public class OwnerController {
         } else {
             // multiple owners found
             model.put("owners", results);
-            return "ownersList";
+            return "owners/ownersList";
         }
     }
 
@@ -84,21 +83,33 @@ public class OwnerController {
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
         Owner owner = ownerRepository.findById(ownerId);
         model.addAttribute("owner",owner);
-        return "createOrUpdateOwnerForm";
+        return "owners/updateOwnerForm";
     }
     @PostMapping("/owners/{ownerId}/edit")
-    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable("ownerId") int ownerId){
+    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
+                                         @PathVariable("ownerId") int ownerId,
+                                         @RequestParam String firstName,
+                                         @RequestParam String lastName,
+                                         @RequestParam String address,
+                                         @RequestParam String city,
+                                         @RequestParam String telephone){
+//       owner = ownerRepository.findById(ownerId);
         if(result.hasErrors()){
-            return "createOrUpdateOwnerForm";
+            return "owners/updateOwnerForm";
         }else {
             owner.setId(ownerId);
+            owner.setFirstName(firstName);
+            owner.setLastName(lastName);
+            owner.setAddress(address);
+            owner.setCity(city);
+            owner.setTelephone(telephone);
             ownerRepository.save(owner);
             return "redirect:/owners/{ownerId}";
         }
     }
     @GetMapping("/owners/{ownerId}")
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-        ModelAndView mav = new ModelAndView("ownerDetails");
+        ModelAndView mav = new ModelAndView("owners/ownerDetails");
         mav.addObject(ownerRepository.findById(ownerId));
         return mav;
     }

@@ -1,4 +1,4 @@
-<#import "parts/common.ftl" as c >
+<#import "../parts/common.ftl" as c >
 <@c.page>
     <form action="/owners/new" method="post" >
             <h2>Owner</h2>
