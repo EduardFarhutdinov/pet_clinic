@@ -25,7 +25,7 @@
 
         <div class="form-row">
             <div class="form-group col-md-6">
-                <input type="text" name="telephone" class="form-control" placeholder="Telephone" value="${owner.telephone?ifExists}">
+                <input type="text" name="telephone" class="form-control" placeholder="Telephone" value="${owner.telephone}">
             </div>
         </div>
 

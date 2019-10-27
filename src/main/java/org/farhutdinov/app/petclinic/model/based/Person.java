@@ -11,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 public class Person extends BasedEntity {
 
     @Column(name = "first_name")
-    @NotEmpty
+    @NotEmpty(message = "not be empty")
     private String firstName;
 
     @Column(name = "last_name")

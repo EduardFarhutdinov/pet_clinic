@@ -15,9 +15,9 @@
         </tr>
         </thead>
         <tbody>
-            <#list owners as owner>
+            <#list  owners as owner>
                 <tr>
-                    <td><a href="/owners/${owner.id}"/> ${owner.firstName + " " + owner.lastName}</td>
+                    <td><a href="/owners/${owner.id}" /> ${owner.firstName + " " + owner.lastName}</td>
                     <td>${owner.address}</td>
                     <td>${owner.city}</td>
                     <td>${owner.telephone}</td>

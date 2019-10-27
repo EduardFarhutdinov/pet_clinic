@@ -4,7 +4,9 @@ import org.farhutdinov.app.petclinic.model.Owner;
 import org.farhutdinov.app.petclinic.repositories.OwnerRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +25,11 @@ public class OwnerController {
         this.ownerRepository = ownerRepository;
     }
 
+    @InitBinder
+    public void setAllowedFields(WebDataBinder dataBinder) {
+        dataBinder.setDisallowedFields("id");
+    }
+
     @GetMapping("/")
     public String welcomePage(){
         return "welcome";
@@ -38,8 +45,8 @@ public class OwnerController {
     public String processCreationForm(@Valid Owner owner, BindingResult result, RedirectAttributes attributes){
         System.out.println(owner);
         if(result.hasErrors()){
-            attributes.addAttribute("firstname",owner.getFirstName());
-            attributes.addAttribute("lastname",owner.getLastName());
+//            attributes.addAttribute("firstname",owner.getFirstName());
+//            attributes.addAttribute("lastname",owner.getLastName());
             return "owners/createOrUpdateOwnerForm";
         }else {
             ownerRepository.save(owner);
@@ -80,30 +87,33 @@ public class OwnerController {
     }
 
     @GetMapping("/owners/{ownerId}/edit")
-    public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
+    public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, ModelMap model) {
         Owner owner = ownerRepository.findById(ownerId);
         model.addAttribute("owner",owner);
+        model.addAttribute("telephone",owner.getTelephone());
         return "owners/updateOwnerForm";
     }
     @PostMapping("/owners/{ownerId}/edit")
-    public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result,
+    public String processUpdateOwnerForm(@Valid Owner owner,    BindingResult result,
                                          @PathVariable("ownerId") int ownerId,
                                          @RequestParam String firstName,
                                          @RequestParam String lastName,
                                          @RequestParam String address,
                                          @RequestParam String city,
-                                         @RequestParam String telephone){
-//       owner = ownerRepository.findById(ownerId);
+                                         @RequestParam String telephone)
+    {
+        owner.setId(ownerId);
         if(result.hasErrors()){
+            System.out.println(owner);
             return "owners/updateOwnerForm";
         }else {
-            owner.setId(ownerId);
-            owner.setFirstName(firstName);
-            owner.setLastName(lastName);
-            owner.setAddress(address);
-            owner.setCity(city);
-            owner.setTelephone(telephone);
+//            owner.setFirstName(firstName);
+//            owner.setLastName(lastName);
+//            owner.setAddress(address);
+//            owner.setCity(city);
+//            owner.setTelephone(telephone);
             ownerRepository.save(owner);
+            System.out.println(owner);
             return "redirect:/owners/{ownerId}";
         }
     }
