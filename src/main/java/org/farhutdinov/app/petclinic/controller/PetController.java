@@ -47,11 +47,12 @@ public class PetController {
     public void initPetBinder(WebDataBinder dataBinder) {
         dataBinder.setValidator(new PetValidator());
     }
+
     @GetMapping("/pets/new")
-    public String initCreationForm(Owner owner, Model model){
+    public String initCreationForm(Owner owner, ModelMap model){
         Pet newPet = new Pet();
         owner.addPet(newPet);
-        model.addAttribute("newPet",newPet);
+        model.put("pet",newPet);
         return "pets/createPetForm";
     }
 
@@ -64,10 +65,7 @@ public class PetController {
         }
         owner.addPet(newPet);
         if(result.hasErrors()){
-            modelMap.put("newPet",newPet);
-            System.out.println(result.getAllErrors());
-            System.out.println(newPet);
-            modelMap.addAttribute("error",result);
+            modelMap.put("pet",newPet);
             return "pets/createPetForm";
         }else {
             petRepository.save(newPet);
@@ -76,35 +74,24 @@ public class PetController {
     }
 
     @GetMapping("/pets/{petId}/edit")
-    public String initUpdateForm(@PathVariable("petId") int petId,Model modelMap){
+    public String initUpdateForm(@PathVariable("petId") int petId,ModelMap modelMap){
         Pet editPet = petRepository.findById(petId);
-        modelMap.addAttribute("editPet",editPet);
-        modelMap.addAttribute("ownerEditPEt",editPet.getOwner());
-//        modelMap.put("editPet",editPet);
+        modelMap.addAttribute("pet",editPet);
         return "pets/updatePetForm";
     }
 
     @PostMapping("/pets/{petId}/edit")
-    public String processUpdateForm(@Valid Pet editPet,BindingResult result,
-                                    @PathVariable("petId") int petId,Owner owner, ModelMap modelMap,
-                                    @RequestParam String name,
-                                    @RequestParam String birthDate,
-                                    @RequestParam PetType type
-                                    ){
-
-//          Pet editPet = petRepository.findById(petId);
+    public String processUpdateForm(@Valid Pet pet , BindingResult result , Owner owner , ModelMap modelMap , @PathVariable int  petId){
 
         if(result.hasErrors()){
-            editPet.setOwner(owner);
-            modelMap.put("pet",editPet);
+            pet.setOwner(owner);
+            modelMap.put("pet",pet);
+//            modelMap.put("error","is empty");
             return "pets/updatePetForm";
         }else {
-            editPet.setId(petId);
-            editPet.setName(name);
-            editPet.setBirthDate(LocalDate.parse(birthDate));
-            editPet.setType(type);
-            owner.addPet(editPet);
-            petRepository.save(editPet);
+            pet.setId(petId);
+            owner.addPet(pet);
+            petRepository.save(pet);
             return "redirect:/owners/{ownerId}";
 
     }

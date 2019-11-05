@@ -1,4 +1,4 @@
-package org.farhutdinov.app.petclinic.owner;
+package org.farhutdinov.app.petclinic.controllers;
 
 import org.assertj.core.util.Lists;
 import org.farhutdinov.app.petclinic.controller.OwnerController;
@@ -36,12 +36,12 @@ public class OwnerControllerTests {
     @Before
     public void setup() {
         george = new Owner();
-        george.setId(TEST_OWNER_ID);
-        george.setFirstName("George");
-        george.setLastName("Franklin");
-        george.setAddress("110 W. Liberty St.");
-        george.setCity("Madison");
-        george.setTelephone("6085551023");
+            george.setId(TEST_OWNER_ID);
+            george.setFirstName("George");
+            george.setLastName("Franklin");
+            george.setAddress("110 W. Liberty St.");
+            george.setCity("Madison");
+            george.setTelephone("6085551023");
 
         given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
     }

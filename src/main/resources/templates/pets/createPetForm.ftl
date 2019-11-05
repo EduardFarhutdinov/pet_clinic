@@ -24,8 +24,8 @@
 <#--            <#list types as type>-->
 <#--                <option name="type">${type}</option>-->
 <#--            </#list>-->
-            <#if (newPet.new == false)>
-                <option selected>${newPet.type}</option>
+            <#if (pet.new == false)>
+                <option selected>${pet.type}</option>
                     <#list types as type>
                         <option >${type}</option>
                     </#list>
